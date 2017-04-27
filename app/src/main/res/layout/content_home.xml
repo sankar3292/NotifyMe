@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.notifyme.activity.HomeActivity"
+    tools:showIn="@layout/app_bar_home">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:id="@+id/search_layout"
+        android:layout_height="wrap_content">
+    <AutoCompleteTextView
+        android:layout_width="320dp"
+        android:background="@color/baegray"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:paddingLeft="20dp"
+        android:textSize="12sp"
+        android:drawableRight="@drawable/search"
+        android:paddingRight="5dp"
+        android:id="@+id/seo_searchview"
+        android:hint="Search for your service"
+        android:layout_height="40dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/layout_griview"
+        android:layout_below="@+id/search_layout"
+        android:layout_height="match_parent">
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#e5e5e5"
+            android:scrollbars="none"
+            android:numColumns="3"
+            android:stretchMode="columnWidth">
+        </GridView>
+    </LinearLayout>
+</RelativeLayout>
