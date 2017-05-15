@@ -12,9 +12,13 @@ import android.widget.ImageView;
 import com.notifyme.R;
 import com.notifyme.adapter.PlacesAdapter;
 import com.notifyme.model.PlacesModel;
+import com.notifyme.model.Result;
 import com.notifyme.service.GPSTracker;
 import com.notifyme.utils.RetrofitMaps;
 import com.notifyme.utils.TakeAroundConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -38,6 +42,7 @@ public class SearchResultActivity extends AppCompatActivity
     private RecyclerView placesRecyclerView;
     private GPSTracker gpsTracker;
     private ImageView back;
+    private List<Result> resultList;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -45,6 +50,7 @@ public class SearchResultActivity extends AppCompatActivity
         setContentView(R.layout.searchresults);
         back= (ImageView) findViewById(R.id.back_searchpage);
         placesRecyclerView= (RecyclerView) findViewById(R.id.search_recyclerview);
+        resultList=new ArrayList<>();
         if(getIntent().getExtras()!=null)
         {
             nearbyplace=getIntent().getExtras().getString("service");
@@ -66,10 +72,8 @@ public class SearchResultActivity extends AppCompatActivity
         });
 
     }
-    private void build_retrofit_and_get_response(String type) {
-
-
-
+    private void build_retrofit_and_get_response(String type)
+    {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TakeAroundConstants.PLACES_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -79,33 +83,43 @@ public class SearchResultActivity extends AppCompatActivity
 
         Call<PlacesModel> call = service.getNearbyPlaces(type, latitude + "," + longitude, PROXIMITY_RADIUS);
 
-        call.enqueue(new Callback<PlacesModel>() {
+        call.enqueue(new Callback<PlacesModel>()
+        {
             @Override
             public void onResponse(Response<PlacesModel> response, Retrofit retrofit) {
 
-                try {
+                try
+                {
 
 //                    // This loop will go through all the results and add marker on each location.
-//                    for (int i = 0; i < response.body().getResults().size(); i++) {
-//                        Double lat = response.body().getResults().get(i).getGeometry().getLocation().getLat();
-//                        Double lng = response.body().getResults().get(i).getGeometry().getLocation().getLng();
-//                        String placeName = response.body().getResults().get(i).getName();
-//                        String vicinity = response.body().getResults().get(i).getVicinity();
-//
-//
-//                    }
-                    for (int i = 0; i < response.body().getResults().size(); i++)
-                    {
-                        Log.e("response",String.valueOf(response.body().getResults().get(0).getIcon()));
-                        placesAdapter=new PlacesAdapter(response.body().getResults(),SearchResultActivity.this);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(SearchResultActivity.this);
-                        placesRecyclerView.setLayoutManager(mLayoutManager);
-                        placesRecyclerView.setAdapter(placesAdapter);
+                    for (int i = 0; i < response.body().getResults().size(); i++) {
+                        Double lat = response.body().getResults().get(i).getGeometry().getLocation().getLat();
+                        Double lng = response.body().getResults().get(i).getGeometry().getLocation().getLng();
+                        String placeName = response.body().getResults().get(i).getName();
+                        String vicinity = response.body().getResults().get(i).getVicinity();
+                        Log.e("hotel name", String.valueOf(placeName));
+                        Log.e("Place name", String.valueOf(vicinity));
+
                     }
 
-                    Log.e("response", String.valueOf(response.body().getResults()));
+                    resultList=response.body().getResults();
 
-                } catch (Exception e) {
+//                    Log.e("total count", String.valueOf(response.body().getResults().size()));
+////                        Log.e("response",String.valueOf(response.body().getResults().get(0).getIcon()));
+//                    placesAdapter=new PlacesAdapter(resultList,SearchResultActivity.this);
+//                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(SearchResultActivity.this);
+//                    placesRecyclerView.setLayoutManager(mLayoutManager);
+//                    placesRecyclerView.setAdapter(placesAdapter);
+
+//                    for (int i = 0; i < response.body().getResults().size(); i++)
+//                    {
+//
+//                    }
+
+
+
+                } catch (Exception e)
+                {
                     Log.d("onResponse", "There is an error");
                     e.printStackTrace();
                 }
