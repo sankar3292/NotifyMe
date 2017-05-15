@@ -86,13 +86,15 @@ public class SearchResultActivity extends AppCompatActivity
         call.enqueue(new Callback<PlacesModel>()
         {
             @Override
-            public void onResponse(Response<PlacesModel> response, Retrofit retrofit) {
+            public void onResponse(Response<PlacesModel> response, Retrofit retrofit)
+            {
 
                 try
                 {
 
 //                    // This loop will go through all the results and add marker on each location.
-                    for (int i = 0; i < response.body().getResults().size(); i++) {
+                    for (int i = 0; i < response.body().getResults().size(); i++)
+                    {
                         Double lat = response.body().getResults().get(i).getGeometry().getLocation().getLat();
                         Double lng = response.body().getResults().get(i).getGeometry().getLocation().getLng();
                         String placeName = response.body().getResults().get(i).getName();
